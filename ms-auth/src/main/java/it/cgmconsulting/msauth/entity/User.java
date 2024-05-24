@@ -2,8 +2,9 @@ package it.cgmconsulting.msauth.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "_user") // antepongo l'underscore per non avere problemi con termini che potrebbero essere interpretati come parole chiave dal db
@@ -31,6 +32,11 @@ public class User {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
 
 }
 

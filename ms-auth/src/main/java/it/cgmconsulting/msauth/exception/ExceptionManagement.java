@@ -25,7 +25,7 @@ public class ExceptionManagement {
 
     @ExceptionHandler(GenericException.class)
     public ResponseEntity<String> genericExceptionManagement(GenericException ex){
-        return new ResponseEntity<String>(ex.getMessage(), HttpStatus.CONFLICT);
+        return new ResponseEntity<String>(ex.getMessage(), ex.getStatus());
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)

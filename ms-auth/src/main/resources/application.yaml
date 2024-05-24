@@ -1,5 +1,5 @@
 server:
-  port: 8060
+  port: 0
   servlet:
     # http://hostname:port/context-path/request-mapping/uri
     # http://localhost:8090/ms-auth/...
@@ -8,6 +8,10 @@ server:
 spring:
   application:
     name: ms-auth
+
+  # Zipkin configuration
+  #zipkin.base-url: http://localhost:9411/
+  #sleuth.sampler.probability: 1.0
 
   datasource:
     #url: jdbc:mysql://${MYSQL_HOSTNAME}:${MYSQL_PORT}/${MYSQL_DATABASE_NAME}?ssl-mode=REQUIRED
@@ -58,6 +62,7 @@ management:
   info:
     java.enabled: true
     os.enabled: true
+
 
 
 # CUSTOM PROPERTIES
