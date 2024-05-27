@@ -10,6 +10,7 @@ import it.cgmconsulting.msauth.payload.response.SigninResponse;
 import it.cgmconsulting.msauth.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +20,7 @@ import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
 
     private final UserRepository repo;
@@ -37,8 +39,8 @@ public class UserService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .username(request.getUsername())
                 .build();
-
         repo.save(user);
+        log.info("Signup : {} " , user );
         return ResponseEntity.status(201).body(user);
     }
 

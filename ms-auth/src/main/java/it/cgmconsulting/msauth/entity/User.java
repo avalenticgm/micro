@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "_user") // antepongo l'underscore per non avere problemi con termini che potrebbero essere interpretati come parole chiave dal db
-@Getter @Setter @AllArgsConstructor @Builder
+@Getter @Setter @AllArgsConstructor @Builder @ToString
 @NoArgsConstructor @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper=false)
 public class User {
 

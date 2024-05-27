@@ -12,6 +12,11 @@ spring:
           uri: lb://ms-auth
           predicates:
             - Path=/ms-auth/**
+        - id: ms-post
+          # lb = load balancer
+          uri: lb://ms-post
+          predicates:
+            - Path=/ms-post/**
 
 
 eureka:

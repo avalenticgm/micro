@@ -18,7 +18,9 @@ public class GatewayConfig {
                 .route("ms-auth", r -> r.path("/ms-auth/**")
                         .filters(f -> f.filter(filter))
                         .uri("lb://ms-auth"))
-
+                .route("ms-post", r -> r.path("/ms-post/**")
+                        .filters(f -> f.filter(filter))
+                        .uri("lb://ms-post"))
                 .build();
     }
 
