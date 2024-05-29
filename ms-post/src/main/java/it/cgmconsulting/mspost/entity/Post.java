@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,6 +31,20 @@ public class Post {
     private String postImage;
 
     private int author;
+
+    private LocalDate publicationDate;
+
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
+
+    public Post(String title, String postImage, int author) {
+        this.title = title;
+        this.postImage = postImage;
+        this.author = author;
+        this.createdAt = LocalDateTime.now();
+    }
 
     public Post addSection(Section s){
         sections.add(s);

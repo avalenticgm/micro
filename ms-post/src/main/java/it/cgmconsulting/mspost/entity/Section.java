@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter @Setter @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -31,5 +33,20 @@ public class Section {
 
     private String sectionImage;
 
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 
+    private LocalDateTime updatedAt;
+
+    private int author;
+
+    public Section(Post post, SectionTitle title, String subTitle, String content, String sectionImage, int author) {
+        this.post = post;
+        this.title = title;
+        this.subTitle = subTitle;
+        this.content = content;
+        this.sectionImage = sectionImage;
+        this.author = author;
+        this.createdAt = LocalDateTime.now();
+    }
 }

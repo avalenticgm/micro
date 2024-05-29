@@ -4,6 +4,7 @@ server:
 spring:
   application:
     name: gateway
+
   cloud:
     gateway:
       routes:
@@ -30,8 +31,8 @@ eureka:
 
 logging:
   level:
-    org.springframework: info
-    it.cgmconsulting.gateway: info
+    ['org.springframework']: info
+    ['it.cgmconsulting.gateway']: info
 
 # CUSTOM PROPERTIES
 application:

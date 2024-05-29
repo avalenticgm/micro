@@ -10,6 +10,7 @@ import java.util.List;
 public interface SectionTitleRepository extends JpaRepository<SectionTitle, Byte> {
 
     boolean existsBySectionTitle (String sectionTitle);
+    boolean existsBySectionTitleAndIdNot (String sectionTitle, byte id);
 
     @Query(value="SELECT new it.cgmconsulting.mspost.payload.response.SectionTitleResponse(" +
             "s.id, " +
