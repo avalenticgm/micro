@@ -34,7 +34,8 @@ public class AuthenticationFilter implements GatewayFilter {
         // verifico se l'endpoint richiede il token
         if(routeValidator.isOpenEndpoint(request))
             exchange.getResponse().setStatusCode(HttpStatus.OK);
-        else if( (request.getHeaders().getOrEmpty("Authorization-Internal").get(0)).equals(internalToken) )
+        else if( request.getHeaders().containsKey("Authorization-Internal") &&
+                (request.getHeaders().getOrEmpty("Authorization-Internal").get(0)).equals(internalToken) )
             exchange.getResponse().setStatusCode(HttpStatus.OK);
         else {
             // Se per la request è richiesto il token ma nell'header non compare la chiave 'Authorization', blocco tutto perchè significa che il token è mancante

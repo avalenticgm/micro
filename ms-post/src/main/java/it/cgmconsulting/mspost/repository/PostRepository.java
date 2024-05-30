@@ -22,4 +22,6 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 
     @Query(value="SELECT p.author FROM Post p WHERE p.id = :postId")
     int getAuthorId(int postId);
+
+    Optional<Post> findByIdAndPublicationDateIsNotNullAndPublicationDateLessThanEqual(int id, LocalDate now);
 }

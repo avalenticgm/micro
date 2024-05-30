@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 @RestController
 @RequiredArgsConstructor
 public class PostController {
@@ -24,5 +26,17 @@ public class PostController {
     @GetMapping("/v0/{id}")
     public ResponseEntity<?> getPostDetail(@PathVariable @Min(1) int id){
         return postService.getPostDetail(id);
+    }
+
+    @GetMapping("/v0/bis/{id}")
+    public ResponseEntity<?> getPostDetailBis(@PathVariable @Min(1) int id) {
+        return postService.getPostDetailBis(id);
+    }
+
+    @PatchMapping("/v1/{id}")
+    public ResponseEntity<?> publish(
+            @PathVariable @Min(1) int id,
+            @RequestParam(required = false) LocalDate publicationDate){
+        return postService.publish(id, publicationDate);
     }
 }

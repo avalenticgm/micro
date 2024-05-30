@@ -34,4 +34,5 @@ public class UserController {
     public String getUsername(@PathVariable @Min(1) int userId){
         return service.getUsername(userId);
     }
+
 }
