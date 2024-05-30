@@ -74,4 +74,9 @@ public class UserService {
         }
         return ResponseEntity.status(400).body("Same role");
     }
+
+    public String getUsername(int id){
+        String username = repo.getUsername(id);
+        return username != null ? username : "anonymous";
+    }
 }

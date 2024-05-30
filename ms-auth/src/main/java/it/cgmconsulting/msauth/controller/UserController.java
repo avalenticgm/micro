@@ -4,6 +4,7 @@ import it.cgmconsulting.msauth.payload.request.SigninRequest;
 import it.cgmconsulting.msauth.payload.request.SignupRequest;
 import it.cgmconsulting.msauth.service.UserService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,5 +28,10 @@ public class UserController {
     @PutMapping("/v1/{userId}")
     public ResponseEntity<?> changeRole(@PathVariable int userId, @RequestParam String role, @RequestHeader("userId") int id){
         return service.changeRole(userId, role, id);
+    }
+
+    @GetMapping("/v99/{userId}")
+    public String getUsername(@PathVariable @Min(1) int userId){
+        return service.getUsername(userId);
     }
 }

@@ -1,9 +1,6 @@
 package it.cgmconsulting.mspost.payload.response;
 
 import it.cgmconsulting.mspost.entity.Section;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

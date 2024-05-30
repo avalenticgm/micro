@@ -63,3 +63,8 @@ management:
     java.enabled: true
     os.enabled: true
 
+# CUSTOM PROPERTIES
+application:
+  security:
+    internalToken: ${INTERNAL_TOKEN}
+

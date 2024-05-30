@@ -38,3 +38,4 @@ logging:
 application:
   security:
     token: ${TOKEN}
+    internalToken: ${INTERNAL_TOKEN}
