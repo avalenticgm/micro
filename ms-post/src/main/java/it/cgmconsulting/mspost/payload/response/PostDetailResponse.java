@@ -28,4 +28,12 @@ public class PostDetailResponse {
         this.publicationDate = publicationDate;
         this.postImage = postImage;
     }
+
+    public PostDetailResponse(int id, String title, LocalDate publicationDate, String postImage, String author) {
+        this.id = id;
+        this.title = title;
+        this.publicationDate = publicationDate;
+        this.postImage = postImage;
+        this.author = author;
+    }
 }

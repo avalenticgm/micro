@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequiredArgsConstructor
 public class UserController {
@@ -33,6 +35,11 @@ public class UserController {
     @GetMapping("/v99/{userId}")
     public String getUsername(@PathVariable @Min(1) int userId){
         return service.getUsername(userId);
+    }
+
+    @GetMapping("/v99/role/{role}")
+    public Map<Integer,String> getUsernames(@PathVariable String role){
+        return service.getUsernames(role);
     }
 
 }
