@@ -80,12 +80,13 @@ public class UserService {
         if(!user.getRole().name().equals(role)) {
             user.setRole(Role.valueOf(role.toUpperCase()));
             user.setUpdatedAt(LocalDateTime.now());
-            if(role.equals("WRITER")){
+           /* if(role.equals("WRITER")){
                 // aggiorno mappa getWiters su ms-post
                 ResponseEntity<?> r = sendNeWriter(user.getId(), user.getUsername());
                 if(r.getStatusCode() != HttpStatus.OK)
                     return ResponseEntity.status(503).body("Change role to WRITER failed");
             }
+            */
             return ResponseEntity.ok("Role has been updated for user "+user.getUsername());
         }
         return ResponseEntity.status(400).body("Same role");
@@ -97,8 +98,8 @@ public class UserService {
     }
 
 
-    public Map<Integer, String> getUsernames(String role) {
-        Set<SimpleUserResponse> set = repo.getSimpleUsers(Role.valueOf(role.toUpperCase()));
+    public Map<Integer, String> getUsernames(Set<Integer> authorIds) {
+        Set<SimpleUserResponse> set = repo.getSimpleUsers(authorIds);
         Map<Integer, String> map = set.stream().collect(Collectors.toMap(SimpleUserResponse::getId, SimpleUserResponse::getUsername));
         return map;
     }

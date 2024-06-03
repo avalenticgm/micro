@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
 import java.util.Optional;
+import java.util.Set;
 
 public interface PostRepository extends JpaRepository<Post, Integer> {
 
@@ -38,5 +39,9 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
             "WHERE p.publicationDate IS NOT NULL " +
             "AND p.publicationDate <= :now")
     Page<PostResponse> getLastPublishedPost(Pageable pageable, LocalDate now);
+
+
+    @Query(value="SELECT p.author FROM Post p")
+    Set<Integer> getAuthorIds();
 
 }

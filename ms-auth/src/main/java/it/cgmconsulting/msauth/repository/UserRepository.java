@@ -21,6 +21,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query(value="SELECT new it.cgmconsulting.msauth.payload.response.SimpleUserResponse(" +
             "u.id, u.username " +
             ") FROM User u " +
-            "WHERE u.role = :role")
-    Set<SimpleUserResponse> getSimpleUsers(Role role);
+            "WHERE u.id IN (:authorIds)")
+    Set<SimpleUserResponse> getSimpleUsers(Set<Integer> authorIds);
 }

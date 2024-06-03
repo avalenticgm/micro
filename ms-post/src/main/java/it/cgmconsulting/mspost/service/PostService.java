@@ -1,5 +1,6 @@
 package it.cgmconsulting.mspost.service;
 
+import it.cgmconsulting.mspost.configuration.BeanManagement;
 import it.cgmconsulting.mspost.entity.Post;
 import it.cgmconsulting.mspost.exception.GenericException;
 import it.cgmconsulting.mspost.exception.ResourceNotFoundException;
@@ -40,10 +41,13 @@ public class PostService {
     private final PostRepository postRepository;
     private final SectionRepository sectionRepository;
     private final Map<String,String> getWriters;
+    private final BeanManagement bean;
 
     public ResponseEntity<?> createPost(PostRequest request, int author) {
         Post post = new Post(request.getTitle(), request.getPostImage(), author);
-        return ResponseEntity.status(201).body(postRepository.save(post));
+        postRepository.save(post);
+        bean.getWriters();
+        return ResponseEntity.status(201).body(post);
     }
 
     public Post findById(int id){

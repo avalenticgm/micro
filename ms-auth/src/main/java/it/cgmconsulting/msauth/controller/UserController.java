@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,9 +38,9 @@ public class UserController {
         return service.getUsername(userId);
     }
 
-    @GetMapping("/v99/role/{role}")
-    public Map<Integer,String> getUsernames(@PathVariable String role){
-        return service.getUsernames(role);
+    @PostMapping("/v99/role")
+    public Map<Integer,String> getUsernames(@RequestBody Set<Integer> authorIds){
+        return service.getUsernames(authorIds);
     }
 
 }
