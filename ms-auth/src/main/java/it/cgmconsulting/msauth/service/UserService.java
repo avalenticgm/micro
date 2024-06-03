@@ -103,7 +103,7 @@ public class UserService {
         Map<Integer, String> map = set.stream().collect(Collectors.toMap(SimpleUserResponse::getId, SimpleUserResponse::getUsername));
         return map;
     }
-
+/*
     private ResponseEntity<?> sendNeWriter(int userId, String username){
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
@@ -122,4 +122,5 @@ public class UserService {
         }
         return r;
     }
+ */
 }

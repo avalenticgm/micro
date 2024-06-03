@@ -21,6 +21,9 @@ public class GatewayConfig {
                 .route("ms-post", r -> r.path("/ms-post/**")
                         .filters(f -> f.filter(filter))
                         .uri("lb://ms-post"))
+                .route("ms-comment", r -> r.path("/ms-comment/**")
+                        .filters(f -> f.filter(filter))
+                        .uri("lb://ms-comment"))
                 .build();
     }
 

@@ -18,6 +18,11 @@ spring:
           uri: lb://ms-post
           predicates:
             - Path=/ms-post/**
+        - id: ms-comment
+          # lb = load balancer
+          uri: lb://ms-comment
+          predicates:
+            - Path=/ms-comment/**
 
 
 eureka:

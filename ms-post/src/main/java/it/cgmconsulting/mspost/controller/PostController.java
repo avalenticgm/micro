@@ -35,7 +35,7 @@ public class PostController {
         return postService.getPostDetailBis(id);
     }
 
-    @PatchMapping("/v1/{id}")
+    @PatchMapping("/v1/{id}") // pubblicazione del post
     public ResponseEntity<?> publish(
             @PathVariable @Min(1) int id,
             @RequestParam(required = false) LocalDate publicationDate){
@@ -51,7 +51,7 @@ public class PostController {
     ){
         return postService.getLastPublishedPost(pageNumber, pageSize, sortBy, direction);
     }
-
+/*
     @PutMapping("/v99/writers")
     public ResponseEntity<?> updateWriters(
             @RequestParam String id,
@@ -60,5 +60,5 @@ public class PostController {
         getWriters.put(id, username);
         return ResponseEntity.ok(null);
     }
-
+*/
 }
