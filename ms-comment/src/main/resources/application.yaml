@@ -20,6 +20,17 @@ spring:
     password: ${MYSQL_PASSWORD}
     #driver-class-name: com.mysql.cj.jdbc.Driver
     driver-class-name: org.mariadb.jdbc.Driver
+    hikari:
+      pool-name: ms-comment-connection-pool
+      maximum-pool-size: 10
+      minimum-idle: 3
+      idle-timeout: 600000
+      register-mbeans: true
+      connection-timeout: 30000
+      max-lifetime: 1800000
+
+
+
 
   jpa:
     hibernate:

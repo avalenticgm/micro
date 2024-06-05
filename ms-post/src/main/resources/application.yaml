@@ -20,6 +20,9 @@ spring:
     password: ${MYSQL_PASSWORD}
     #driver-class-name: com.mysql.cj.jdbc.Driver
     driver-class-name: org.mariadb.jdbc.Driver
+    hikari:
+      pool-name: ms-post-connection-pool
+      maximum-pool-size: 10
 
   jpa:
     hibernate:

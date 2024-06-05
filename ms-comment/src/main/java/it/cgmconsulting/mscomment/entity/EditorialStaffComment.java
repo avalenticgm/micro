@@ -6,7 +6,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Getter @Setter @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class EditorialStaffComment {
 
@@ -20,4 +20,9 @@ public class EditorialStaffComment {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    public EditorialStaffComment(EditorialStaffCommentId id, String comment) {
+        this.id = id;
+        this.comment = comment;
+        this.createdAt = LocalDateTime.now();
+    }
 }

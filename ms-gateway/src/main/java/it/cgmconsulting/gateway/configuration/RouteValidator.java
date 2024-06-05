@@ -12,6 +12,7 @@ public class RouteValidator {
     // v2  -> WRITER
     // v3  -> MEMBER
     // v4  -> MODERATOR
+    // v5  -> EDITORIAL_STAFF
     // v99 -> PER CHIAMATE INTERNE
 
     public boolean isOpenEndpoint(ServerHttpRequest req){

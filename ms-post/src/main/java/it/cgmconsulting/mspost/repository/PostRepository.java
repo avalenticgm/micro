@@ -44,4 +44,6 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     @Query(value="SELECT p.author FROM Post p")
     Set<Integer> getAuthorIds();
 
+    boolean existsByIdAndPublicationDateIsNotNullAndPublicationDateLessThanEqual(int id, LocalDate now);
+
 }

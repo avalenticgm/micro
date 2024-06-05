@@ -61,4 +61,9 @@ public class PostController {
         return ResponseEntity.ok(null);
     }
 */
+
+    @GetMapping("/v99/{postId}")
+    public ResponseEntity<Boolean> existsPost(@PathVariable @Min(1) int postId) {
+        return postService.existsById(postId); // Restituisce direttamente un booleano
+    }
 }

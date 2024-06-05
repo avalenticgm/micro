@@ -133,5 +133,8 @@ public class PostService {
         return ResponseEntity.ok(list);
     }
 
+    public ResponseEntity<Boolean> existsById(int postId) {
+        return ResponseEntity.status(HttpStatus.OK).body(postRepository.existsByIdAndPublicationDateIsNotNullAndPublicationDateLessThanEqual(postId, LocalDate.now()));
+    }
 
 }
