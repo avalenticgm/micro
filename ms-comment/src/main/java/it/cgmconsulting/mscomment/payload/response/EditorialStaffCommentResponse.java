@@ -8,19 +8,18 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Data @NoArgsConstructor
+@Data @NoArgsConstructor @AllArgsConstructor
 public class EditorialStaffCommentResponse {
 
     private int escId;
     private String comment;
     private LocalDateTime createdAt;
-    private String escAuthor;
+    private String escAuthor = Consts.REDAZIONE;
 
     public EditorialStaffCommentResponse(int escId, String comment, LocalDateTime createdAt) {
         this.escId = escId;
         this.comment = comment;
         this.createdAt = createdAt;
-        this.escAuthor = Consts.REDAZIONE;
     }
 
     public static EditorialStaffCommentResponse fromEntityToResponse(EditorialStaffComment e){

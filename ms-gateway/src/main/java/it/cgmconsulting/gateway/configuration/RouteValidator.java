@@ -16,6 +16,6 @@ public class RouteValidator {
     // v99 -> PER CHIAMATE INTERNE
 
     public boolean isOpenEndpoint(ServerHttpRequest req){
-        return req.getURI().getPath().contains("v0");
+        return (req.getURI().getPath().contains("v0") || req.getURI().getPath().contains("actuator"));
     }
 }

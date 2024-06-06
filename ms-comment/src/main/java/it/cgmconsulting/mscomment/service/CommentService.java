@@ -5,8 +5,11 @@ import it.cgmconsulting.mscomment.entity.Comment;
 import it.cgmconsulting.mscomment.exception.GenericException;
 import it.cgmconsulting.mscomment.exception.ResourceNotFoundException;
 import it.cgmconsulting.mscomment.payload.request.CommentRequest;
+import it.cgmconsulting.mscomment.payload.response.CommentFullResponse;
 import it.cgmconsulting.mscomment.payload.response.CommentResponse;
+import it.cgmconsulting.mscomment.payload.response.EditorialStaffCommentResponse;
 import it.cgmconsulting.mscomment.repository.CommentRepository;
+import it.cgmconsulting.mscomment.repository.EditorialStaffCommentRepository;
 import it.cgmconsulting.mscomment.utils.Consts;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +21,10 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +34,7 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final Map<String,String> getMembers;
     private final BeanManagement bean;
+    private final EditorialStaffCommentRepository escRepository;
 
     @Value("${application.security.internalToken}")
     String internalToken;
@@ -70,7 +76,11 @@ public class CommentService {
 
     public ResponseEntity<?> getCommentBis(int id) {
         Comment comment = findById(id);
-        CommentResponse cr = new CommentResponse(comment.getId(),comment.getComment(), getMembers.get(String.valueOf(comment.getAuthor())));
+        CommentResponse cr = new CommentResponse(
+                comment.getId(),
+                comment.getComment(),
+                getMembers.get(String.valueOf(comment.getAuthor())),
+                comment.getUpdatedAt() != null ? comment.getUpdatedAt() : comment.getCreatedAt());
         return ResponseEntity.ok(cr);
     }
 
@@ -104,7 +114,11 @@ public class CommentService {
 
         c.setComment(comment);
         c.setUpdatedAt(LocalDateTime.now());
-        CommentResponse cr = new CommentResponse(commentId, comment, getMembers.get(String.valueOf(c.getAuthor())));
+        CommentResponse cr = new CommentResponse(
+                c.getId(),
+                c.getComment(),
+                getMembers.get(String.valueOf(c.getAuthor())),
+                c.getUpdatedAt() != null ? c.getUpdatedAt() : c.getCreatedAt());
 
         return ResponseEntity.ok(cr);
 
@@ -124,4 +138,28 @@ public class CommentService {
 
     }
 
+    public ResponseEntity<?> getFullComments(int postId) {
+
+        List<CommentResponse> commentResponses = commentRepository.getComments(postId);
+        if(commentResponses.isEmpty())
+            throw new ResourceNotFoundException("Comments", "postId", postId);
+
+        List<EditorialStaffCommentResponse> escResponses = escRepository.getEscs(postId);
+        List<CommentFullResponse> fullResponses = new ArrayList<>();
+
+        for (CommentResponse comment : commentResponses) {
+            Optional<EditorialStaffCommentResponse> matchingEsc = escResponses.stream()
+                    .filter(esc -> esc.getEscId() == comment.getId())
+                    .findFirst();
+            CommentFullResponse fullResponse = new CommentFullResponse();
+            fullResponse.setComment(comment);
+            fullResponse.setEscComment(matchingEsc.orElse(null));
+            fullResponses.add(fullResponse);
+        }
+        return ResponseEntity.ok(fullResponses);
+    }
+
+    public ResponseEntity<?> getFullCommentsBis(int postId) {
+        return ResponseEntity.ok(commentRepository.getFullComments(postId));
+    }
 }

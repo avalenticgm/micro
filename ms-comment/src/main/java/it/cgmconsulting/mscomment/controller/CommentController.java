@@ -58,5 +58,15 @@ public class CommentController {
         return commentService.deleteComment(commentId, author);
     }
 
+    @GetMapping("/v0/full/{postId}")
+    public ResponseEntity<?> getFullComments(@PathVariable @Min(1) int postId){
+        return commentService.getFullComments(postId);
+    }
+
+    @GetMapping("/v0/full/bis/{postId}")
+    public ResponseEntity<?> getFullCommentsBis(@PathVariable @Min(1) int postId){
+        return commentService.getFullCommentsBis(postId);
+    }
+
 
 }

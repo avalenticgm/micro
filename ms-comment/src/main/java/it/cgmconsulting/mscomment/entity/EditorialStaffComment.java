@@ -20,6 +20,8 @@ public class EditorialStaffComment {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    private LocalDateTime updatedAt;
+
     public EditorialStaffComment(EditorialStaffCommentId id, String comment) {
         this.id = id;
         this.comment = comment;

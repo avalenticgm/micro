@@ -4,6 +4,10 @@ server:
     # http://hostname:port/context-path/request-mapping/uri
     # http://localhost:8090/ms-comment/...
     context-path: /ms-comment
+  compression: 
+    enabled: true
+    min-response-size: 2048
+    mime-types: text/html,text/xml,text/plain,text/css,application/json
 
 spring:
   application:
@@ -23,14 +27,20 @@ spring:
     hikari:
       pool-name: ms-comment-connection-pool
       maximum-pool-size: 10
-      minimum-idle: 3
-      idle-timeout: 600000
-      register-mbeans: true
-      connection-timeout: 30000
-      max-lifetime: 1800000
+      #minimum-idle: 3
+      #idle-timeout: 600000
+      #register-mbeans: true
+      #connection-timeout: 30000
+      #max-lifetime: 1800000
 
-
-
+  data:
+    jpa:
+      repositories:
+        bootstrap-mode: DEFAULT
+      # 'bootstrap-mode' valori ammessi:
+      #   - DEFAULT -> I repositories vengono inizializzati all'avvio dell'applicazione
+      #   - DEFERRED -> I repositories vengono inizializzati all'avvio dell'applicazione ma in modo asincrono
+      #   - LAZY -> I repositories vengono inizializzati nel momento in cui vengono richiamati (velocizza l'avvio dell'applicazione ma aumenta i tempi di latenza alla prima chiamata)
 
   jpa:
     hibernate:
@@ -52,9 +62,9 @@ spring:
 
 logging:
   level:
-    ['it.cgmconsulting.mscomment']: info
-    ['org.hibernate.orm.jdbc.bind']: trace
-    ['org.springframework']: info
+    it.cgmconsulting.mscomment: info
+    org.hibernate.orm.jdbc.bind: trace
+    org.springframework: info
 
 eureka:
   instance:
