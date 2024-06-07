@@ -72,7 +72,6 @@ management:
     java.enabled: true
     os.enabled: true
 
-
 resilience4j.circuitbreaker:
   instances:
     a-tempo:
