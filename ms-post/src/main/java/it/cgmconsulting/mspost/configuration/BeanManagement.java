@@ -63,7 +63,7 @@ public class BeanManagement {
 
     public Map<String, String> fallbackMethodGetWriters(Exception e){
         log.error(e.getMessage());
-        return null;
+        return new HashMap<String, String>();
     }
 
 }

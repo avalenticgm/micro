@@ -23,6 +23,11 @@ spring:
           uri: lb://ms-comment
           predicates:
             - Path=/ms-comment/**
+        - id: ms-tag
+          # lb = load balancer
+          uri: lb://ms-tag
+          predicates:
+            - Path=/ms-tag/**
 
 
 eureka:

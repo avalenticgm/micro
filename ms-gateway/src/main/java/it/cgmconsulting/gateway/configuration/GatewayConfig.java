@@ -24,6 +24,9 @@ public class GatewayConfig {
                 .route("ms-comment", r -> r.path("/ms-comment/**")
                         .filters(f -> f.filter(filter))
                         .uri("lb://ms-comment"))
+                .route("ms-tag", r -> r.path("/ms-tag/**")
+                        .filters(f -> f.filter(filter))
+                        .uri("lb://ms-tag"))
                 .build();
     }
 

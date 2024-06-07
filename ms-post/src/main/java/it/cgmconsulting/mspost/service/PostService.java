@@ -51,7 +51,7 @@ public class PostService {
         postRepository.save(post);
         PostResponse p = new PostResponse(post.getId(), post.getTitle(), post.getPublicationDate());
         bean.getWriters();
-        if(getWriters != null)
+        if(!getWriters.isEmpty())
             p.setAuthor(getWriters.get(String.valueOf(post.getAuthor())));
         return ResponseEntity.status(201).body(p);
     }

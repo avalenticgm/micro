@@ -51,6 +51,7 @@ public class CommentController {
         return commentService.updateComment(commentId, comment, author);
     }
 
+    // delete del commento possibile se effettuta entro 60 secondi dal primo salvataggio
     @DeleteMapping("/v3/{commentId}")
     public ResponseEntity<?> deleteComment(
             @PathVariable  @Min(1) int commentId,
@@ -58,11 +59,13 @@ public class CommentController {
         return commentService.deleteComment(commentId, author);
     }
 
+    /** elenco commenti + eventuali risposte redazione **/
     @GetMapping("/v0/full/{postId}")
     public ResponseEntity<?> getFullComments(@PathVariable @Min(1) int postId){
         return commentService.getFullComments(postId);
     }
 
+    /** elenco commenti + eventuali risposte redazione **/
     @GetMapping("/v0/full/bis/{postId}")
     public ResponseEntity<?> getFullCommentsBis(@PathVariable @Min(1) int postId){
         return commentService.getFullCommentsBis(postId);
