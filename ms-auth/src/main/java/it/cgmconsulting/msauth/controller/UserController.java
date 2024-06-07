@@ -39,7 +39,8 @@ public class UserController {
     }
 
     @PostMapping("/v99/role")
-    public Map<Integer,String> getUsernames(@RequestBody Set<Integer> authorIds){
+    public Map<Integer,String> getUsernames(@RequestBody Set<Integer> authorIds) /*throws InterruptedException*/ {
+        //Thread.sleep(3000);
         return service.getUsernames(authorIds);
     }
 

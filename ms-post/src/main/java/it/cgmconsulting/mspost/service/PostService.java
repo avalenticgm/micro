@@ -1,5 +1,6 @@
 package it.cgmconsulting.mspost.service;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import it.cgmconsulting.mspost.configuration.BeanManagement;
 import it.cgmconsulting.mspost.entity.Post;
 import it.cgmconsulting.mspost.exception.GenericException;
@@ -13,6 +14,7 @@ import it.cgmconsulting.mspost.repository.SectionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -43,11 +45,15 @@ public class PostService {
     private final Map<String,String> getWriters;
     private final BeanManagement bean;
 
+
     public ResponseEntity<?> createPost(PostRequest request, int author) {
         Post post = new Post(request.getTitle(), request.getPostImage(), author);
         postRepository.save(post);
+        PostResponse p = new PostResponse(post.getId(), post.getTitle(), post.getPublicationDate());
         bean.getWriters();
-        return ResponseEntity.status(201).body(post);
+        if(getWriters != null)
+            p.setAuthor(getWriters.get(String.valueOf(post.getAuthor())));
+        return ResponseEntity.status(201).body(p);
     }
 
     public Post findById(int id){

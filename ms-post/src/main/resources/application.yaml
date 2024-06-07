@@ -84,7 +84,7 @@ resilience4j.circuitbreaker:
       slow-call-rate-threshold: 100
       # Un'interazione è considerata lenta se impiega più di n secondi a rispondere
       slow-call-duration-threshold: 2s
-      # Tempo per il quale permane lo stato HALF_OPEN
+      # Tempo per passare dallo stato di OPEN allo stato di HALF_OPEN
       wait-duration-in-open-state: 60s
       minimum-number-of-calls: 1
       # Numero massimo di request permesse in stato HALF_OPEN

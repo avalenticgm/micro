@@ -6,6 +6,7 @@ import it.cgmconsulting.mscomment.exception.GenericException;
 import it.cgmconsulting.mscomment.exception.ResourceNotFoundException;
 import it.cgmconsulting.mscomment.payload.request.CommentRequest;
 import it.cgmconsulting.mscomment.payload.response.CommentFullResponse;
+import it.cgmconsulting.mscomment.payload.response.CommentFullResponseBis;
 import it.cgmconsulting.mscomment.payload.response.CommentResponse;
 import it.cgmconsulting.mscomment.payload.response.EditorialStaffCommentResponse;
 import it.cgmconsulting.mscomment.repository.CommentRepository;
@@ -151,15 +152,21 @@ public class CommentService {
             Optional<EditorialStaffCommentResponse> matchingEsc = escResponses.stream()
                     .filter(esc -> esc.getEscId() == comment.getId())
                     .findFirst();
+            comment.setAuthor(getMembers.get(comment.getAuthor()));
             CommentFullResponse fullResponse = new CommentFullResponse();
             fullResponse.setComment(comment);
             fullResponse.setEscComment(matchingEsc.orElse(null));
             fullResponses.add(fullResponse);
+
         }
         return ResponseEntity.ok(fullResponses);
     }
 
     public ResponseEntity<?> getFullCommentsBis(int postId) {
-        return ResponseEntity.ok(commentRepository.getFullComments(postId));
+        List<CommentFullResponseBis> list = commentRepository.getFullComments(postId);
+        for(CommentFullResponseBis c : list){
+            c.setAuthor(getMembers.get(c.getAuthor()));
+        }
+        return ResponseEntity.ok(list);
     }
 }
