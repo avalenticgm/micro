@@ -5,10 +5,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.*;
 
+import java.io.Serializable;
+
 @Embeddable
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 @EqualsAndHashCode
-public class PostTagId {
+public class PostTagId implements Serializable {
 
     private int postId;
 

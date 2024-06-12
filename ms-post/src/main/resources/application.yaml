@@ -22,7 +22,11 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
     hikari:
       pool-name: ms-post-connection-pool
-      maximum-pool-size: 10
+      maximum-pool-size: 15
+      minimum-idle: 5
+      idle-timeout: 30000
+      connection-timeout: 20000
+      max-lifetime: 1800000
 
   jpa:
     hibernate:
