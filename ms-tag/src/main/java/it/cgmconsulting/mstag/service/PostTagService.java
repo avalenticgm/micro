@@ -34,20 +34,23 @@ public class PostTagService {
 
     @Transactional
     public ResponseEntity<?> updateTagsToPost(int postId, Set<String> tagNames) {
-        Set<Tag> newTags = tagRepository.getTags(tagNames);
-        Set<Tag> oldTags = postTagRepository.getTags(postId);
 
-        oldTags.removeIf(t -> !newTags.contains(t));
-        oldTags.addAll(newTags);
+        // se il Set<String> tagNames è vuoto, vengono eliminati tutti i record sulla tabella post_tag
+        postTagRepository.deleteByPostId(postId);
+        Set<PostTag> newPostTags = new HashSet<>();
 
-        Set<PostTag> x = new HashSet<>();
-        for(Tag t : oldTags){
-            x.add(new PostTag(new PostTagId(postId, t)));
+        if(!tagNames.isEmpty()) {
+            Set<Tag> newTags = tagRepository.getTags(tagNames);
+            for (Tag t : newTags) {
+                newPostTags.add(new PostTag(new PostTagId(postId, t)));
+            }
+            postTagRepository.saveAll(newPostTags);
         }
-        for(Tag t : oldTags){
-            t.setPosts(x);
-        }
+        return ResponseEntity.ok(newPostTags);
+    }
 
-        return ResponseEntity.ok(x);
+    public ResponseEntity<?> getTagsByPost(int postId) {
+        Set<String> tags = postTagRepository.getTagsByPost(postId);
+        return ResponseEntity.ok(tags);
     }
 }

@@ -2,6 +2,7 @@ package it.cgmconsulting.mstag.controller;
 
 import it.cgmconsulting.mstag.service.PostTagService;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,4 +34,8 @@ public class PostTagController {
 
     // get per ottenere i tags associati ad un post
     // ENDPOINT RICHIAMATO DA MS-POST
+    @GetMapping("/v99/{postId}")
+    public ResponseEntity<?> getTagsByPost(@PathVariable @Min(1) int postId){
+        return postTagService.getTagsByPost(postId);
+    }
 }

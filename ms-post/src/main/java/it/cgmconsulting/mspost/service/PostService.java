@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -72,6 +73,9 @@ public class PostService {
 
         // recuperare lo username dell'autore
         p.setAuthor(getWriters.get(p.getAuthor()));
+
+        // recuperare i Tag associati al post
+        p.setTagNames(getTags(p.getId()).getBody());
         return ResponseEntity.ok(p);
     }
 
@@ -88,6 +92,27 @@ public class PostService {
         pdr.setAuthor(getWriters.get(String.valueOf(p.getAuthor())));
         return ResponseEntity.ok(pdr);
     }
+
+    private ResponseEntity<Set<String>> getTags(int postId){
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization-Internal", internalToken);
+
+        HttpEntity<String> httpEntity = new HttpEntity<>(null, headers);
+
+        String url = "http://localhost:9090/ms-tag/v99/"+postId;
+
+        ResponseEntity<Set<String>> tagNames = null;
+        try{
+            tagNames = restTemplate.exchange(url, HttpMethod.GET, httpEntity,
+                    new ParameterizedTypeReference<Set<String>>() {});
+        } catch (RestClientException e){
+            log.error(e.getMessage());
+            return ResponseEntity.status(500).body(null);
+        }
+        return tagNames;
+    }
+
 /*
     private ResponseEntity<String> getUsername(int userId){
         RestTemplate restTemplate = new RestTemplate();

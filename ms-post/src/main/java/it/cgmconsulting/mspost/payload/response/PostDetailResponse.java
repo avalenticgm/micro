@@ -22,6 +22,9 @@ public class PostDetailResponse {
     // from ms-auth (User)
     private String author;
 
+    // from ms-tag
+    private Set<String> tagNames;
+
     public PostDetailResponse(int id, String title, LocalDate publicationDate, String postImage) {
         this.id = id;
         this.title = title;
