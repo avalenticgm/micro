@@ -28,6 +28,11 @@ spring:
           uri: lb://ms-tag
           predicates:
             - Path=/ms-tag/**
+        - id: ms-rating
+          # lb = load balancer
+          uri: lb://ms-rating
+          predicates:
+            - Path=/ms-rating/**
 
 
 eureka:
@@ -43,6 +48,23 @@ logging:
   level:
     ['org.springframework']: info
     ['it.cgmconsulting.gateway']: info
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health
+  otlp:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
+  tracing:
+    sampling:
+      probability: 1.0
+
+
 
 # CUSTOM PROPERTIES
 application:

@@ -27,6 +27,9 @@ public class GatewayConfig {
                 .route("ms-tag", r -> r.path("/ms-tag/**")
                         .filters(f -> f.filter(filter))
                         .uri("lb://ms-tag"))
+                .route("ms-rating", r -> r.path("/ms-rating/**")
+                        .filters(f -> f.filter(filter))
+                        .uri("lb://ms-rating"))
                 .build();
     }
 

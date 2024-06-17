@@ -11,6 +11,7 @@ import it.cgmconsulting.mspost.payload.response.PostResponse;
 import it.cgmconsulting.mspost.payload.response.SectionResponse;
 import it.cgmconsulting.mspost.repository.PostRepository;
 import it.cgmconsulting.mspost.repository.SectionRepository;
+import it.cgmconsulting.mspost.utils.Consts;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,10 +28,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,6 +43,7 @@ public class PostService {
     private final SectionRepository sectionRepository;
     private final Map<String,String> getWriters;
     private final BeanManagement bean;
+    private final CircuitBreakerService circuitBreakerService;
 
 
     public ResponseEntity<?> createPost(PostRequest request, int author) {
@@ -75,7 +74,11 @@ public class PostService {
         p.setAuthor(getWriters.get(p.getAuthor()));
 
         // recuperare i Tag associati al post
-        p.setTagNames(getTags(p.getId()).getBody());
+        p.setTagNames(circuitBreakerService.getTagNames(p.getId()).getBody());
+
+        // recupero media voti del post in oggetto
+        p.setAverage(circuitBreakerService.getAverage(id));
+
         return ResponseEntity.ok(p);
     }
 
@@ -90,9 +93,16 @@ public class PostService {
         pdr.setSections(sections);
 
         pdr.setAuthor(getWriters.get(String.valueOf(p.getAuthor())));
+
+        // recuperare i Tag associati al post
+        pdr.setTagNames(circuitBreakerService.getTagNames(p.getId()).getBody());
+
+        // recupero media voti del post in oggetto
+        pdr.setAverage(circuitBreakerService.getAverage(id));
+
         return ResponseEntity.ok(pdr);
     }
-
+/*
     private ResponseEntity<Set<String>> getTags(int postId){
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
@@ -100,7 +110,7 @@ public class PostService {
 
         HttpEntity<String> httpEntity = new HttpEntity<>(null, headers);
 
-        String url = "http://localhost:9090/ms-tag/v99/"+postId;
+        String url = Consts.GATEWAY+"/"+Consts.MS_TAG+"/v99/"+postId;
 
         ResponseEntity<Set<String>> tagNames = null;
         try{
@@ -108,31 +118,49 @@ public class PostService {
                     new ParameterizedTypeReference<Set<String>>() {});
         } catch (RestClientException e){
             log.error(e.getMessage());
-            return ResponseEntity.status(500).body(null);
+            return ResponseEntity.status(500).body(new HashSet<>());
         }
         return tagNames;
     }
 
-/*
-    private ResponseEntity<String> getUsername(int userId){
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization-Internal", internalToken);
+        private double getAverage(int postId){
+            RestTemplate restTemplate = new RestTemplate();
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Authorization-Internal", internalToken);
 
-        HttpEntity<String> httpEntity = new HttpEntity<>(null, headers);
+            HttpEntity<String> httpEntity = new HttpEntity<>(null, headers);
+            String url = Consts.GATEWAY+"/"+Consts.MS_RATING+"/v99/"+postId;
 
-        String url = "http://localhost:9090/ms-auth/v99/"+userId;
-
-        ResponseEntity<String> banner = null;
-        try{
-            banner = restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class);
-        } catch (RestClientException e){
-            log.error(e.getMessage());
-            return ResponseEntity.status(500).body(null);
+            ResponseEntity<Double> response = null;
+            try{
+                response = restTemplate.exchange(url, HttpMethod.GET, httpEntity, Double.class);
+            } catch (RestClientException e){
+                log.error(e.getMessage());
+                return 0d;
+            }
+            return response.getBody() != null ? response.getBody() : 0d;
         }
-        return banner;
-    }
-*/
+
+
+        private ResponseEntity<String> getUsername(int userId){
+            RestTemplate restTemplate = new RestTemplate();
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Authorization-Internal", internalToken);
+
+            HttpEntity<String> httpEntity = new HttpEntity<>(null, headers);
+
+            String url = "http://localhost:9090/ms-auth/v99/"+userId;
+
+            ResponseEntity<String> banner = null;
+            try{
+                banner = restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class);
+            } catch (RestClientException e){
+                log.error(e.getMessage());
+                return ResponseEntity.status(500).body(null);
+            }
+            return banner;
+        }
+    */
     public ResponseEntity<?> publish(int id, LocalDate publicationDate) {
         // se publicationDate non viene passata = LocalDate.now()
         // altrimenti deve essere una data nel futuro

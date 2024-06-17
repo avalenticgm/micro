@@ -50,21 +50,23 @@ public class CommentController {
     // modifica del testo del commento possibile se effettuta entro 60 secondi dal primo salvataggio
     // ed effettuabile solo dallo user autore del commento
     @PatchMapping("/v3/{commentId}")
-    @CacheEvict(value="tutti-i-commenti", allEntries = true)
+    @CacheEvict(value="tutti-i-commenti", key = "{#postId}")
     public ResponseEntity<?> updateComment(
             @PathVariable  @Min(1) int commentId,
             @RequestParam @NotBlank @Size(min = 1, max = 255) String comment,
-            @RequestHeader("userId") int author){
+            @RequestHeader("userId") int author,
+            @RequestParam @Min(1) int postId){
         return commentService.updateComment(commentId, comment, author);
     }
 
     // delete del commento possibile se effettuta entro 60 secondi dal primo salvataggio
 
     @DeleteMapping("/v3/{commentId}")
-    @CacheEvict(value="tutti-i-commenti", allEntries = true)
+    @CacheEvict(value="tutti-i-commenti", key = "{#postId}")
     public ResponseEntity<?> deleteComment(
-            @PathVariable  @Min(1) int commentId,
-            @RequestHeader("userId") int author){
+            @PathVariable @Min(1) int commentId,
+            @RequestHeader("userId") int author,
+            @RequestParam @Min(1) int postId){
         return commentService.deleteComment(commentId, author);
     }
 

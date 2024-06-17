@@ -53,23 +53,24 @@ eureka:
     service-url:
       default-zone: localhost:8761/eureka
 
+
 management:
+  endpoint:
+    health:
+      show-details: always
   endpoints:
     web:
       exposure:
-        include: info,health
-  #zipkin.tracing:
-    #connect-timeout: 1s
-    #endpoint: http://localhost:9411/api/v2/spans
-    #read-timeout: 10s
-  #tracing:
-    #sampling:
-      #probability: 1.0
+        include: health,info
   info:
     java.enabled: true
     os.enabled: true
-  #health:
-    #diskspace.enabled: true
+  otlp:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
+  tracing:
+    sampling:
+      probability: 1.0
 
 
 

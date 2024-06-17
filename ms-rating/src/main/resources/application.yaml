@@ -2,12 +2,12 @@ server:
   port: 0
   servlet:
     # http://hostname:port/context-path/request-mapping/uri
-    # http://localhost:8090/ms-post/...
-    context-path: /ms-post
+    # http://localhost:8090/ms-rating/...
+    context-path: /ms-rating
 
 spring:
   application:
-    name: ms-post
+    name: ms-rating
 
   # Zipkin configuration
   #zipkin.base-url: http://localhost:9411/
@@ -21,7 +21,7 @@ spring:
     #driver-class-name: com.mysql.cj.jdbc.Driver
     driver-class-name: org.mariadb.jdbc.Driver
     hikari:
-      pool-name: ms-post-connection-pool
+      pool-name: ms-rating-connection-pool
       maximum-pool-size: 15
       minimum-idle: 5
       idle-timeout: 30000
@@ -48,7 +48,7 @@ spring:
 
 logging:
   level:
-    it.cgmconsulting.mspost: info
+    it.cgmconsulting.msrating: info
     org.hibernate.orm.jdbc.bind: trace
     org.springframework: info
 
@@ -78,7 +78,7 @@ management:
 
 resilience4j.circuitbreaker:
   instances:
-    a-tempo: #nomi arbitrari per le istanze dei controlli
+    a-tempo:
       register-health-indicator: true
       # Apertura del circuito se la request impiega più tempo di quanto stimato
       sliding-window-type: TIME_BASED
@@ -88,45 +88,13 @@ resilience4j.circuitbreaker:
       slow-call-rate-threshold: 100
       # Un'interazione è considerata lenta se impiega più di n secondi a rispondere
       slow-call-duration-threshold: 2s
-      # Tempo per passare dallo stato di OPEN a HALF_OPEN
+      # Tempo per passare dallo stato di OPEN allo stato di HALF_OPEN
       wait-duration-in-open-state: 60s
       minimum-number-of-calls: 1
       # Numero massimo di request permesse in stato HALF_OPEN
       permitted-number-of-calls-in-half-open-state: 1
       automatic-transition-from-open-to-half-open-enabled: true
-    a-tempo-tags: #nomi arbitrari per le istanze dei controlli
-      register-health-indicator: true
-      # Apertura del circuito se la request impiega più tempo di quanto stimato
-      sliding-window-type: TIME_BASED
-      # Numero di tentativi di request
-      sliding-window-size: 1
-      # Soglia - in percentuale - di fallimenti (se al 100%, basta che la chiamata al microservizio fallisca una volta sola)
-      slow-call-rate-threshold: 100
-      # Un'interazione è considerata lenta se impiega più di n secondi a rispondere
-      slow-call-duration-threshold: 2s
-      # Tempo per passare dallo stato di OPEN a HALF_OPEN
-      wait-duration-in-open-state: 60s
-      minimum-number-of-calls: 1
-      # Numero massimo di request permesse in stato HALF_OPEN
-      permitted-number-of-calls-in-half-open-state: 1
-      automatic-transition-from-open-to-half-open-enabled: true
-    a-tempo-ratings: #nomi arbitrari per le istanze dei controlli
-      register-health-indicator: true
-      # Apertura del circuito se la request impiega più tempo di quanto stimato
-      sliding-window-type: TIME_BASED
-      # Numero di tentativi di request
-      sliding-window-size: 1
-      # Soglia - in percentuale - di fallimenti (se al 100%, basta che la chiamata al microservizio fallisca una volta sola)
-      slow-call-rate-threshold: 100
-      # Un'interazione è considerata lenta se impiega più di n secondi a rispondere
-      slow-call-duration-threshold: 2s
-      # Tempo per passare dallo stato di OPEN a HALF_OPEN
-      wait-duration-in-open-state: 60s
-      minimum-number-of-calls: 1
-      # Numero massimo di request permesse in stato HALF_OPEN
-      permitted-number-of-calls-in-half-open-state: 1
-      automatic-transition-from-open-to-half-open-enabled: true
-    a-tentativi: #nome seconda istanza arbitrario
+    a-tentativi:
       register-health-indicator: true
       # Apertura del circuito se la request fallisce n volte
       sliding-window-type: COUNT_BASED
@@ -138,8 +106,10 @@ resilience4j.circuitbreaker:
       permitted-number-of-calls-in-half-open-state: 1
       automatic-transition-from-open-to-half-open-enabled: true
 
+
+
 # CUSTOM PROPERTIES
 application:
   security:
-    token: ${TOKEN}
     internalToken: ${INTERNAL_TOKEN}
+
