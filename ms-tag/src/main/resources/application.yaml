@@ -13,10 +13,6 @@ spring:
   application:
     name: ms-tag
 
-  # Zipkin configuration
-  #zipkin.base-url: http://localhost:9411/
-  #sleuth.sampler.probability: 1.0
-
   datasource:
     #url: jdbc:mysql://${MYSQL_HOSTNAME}:${MYSQL_PORT}/${MYSQL_DATABASE_NAME}?ssl-mode=REQUIRED
     url: jdbc:mariadb://${MYSQL_HOSTNAME}:${MYSQL_PORT}/${MYSQL_DATABASE_NAME}?ssl-mode=REQUIRED
@@ -76,6 +72,9 @@ eureka:
       default-zone: localhost:8761/eureka
 
 management:
+  endpoint:
+    health:
+      show-details: always
   endpoints:
     web:
       exposure:
@@ -83,6 +82,12 @@ management:
   info:
     java.enabled: true
     os.enabled: true
+  otlp:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
+  tracing:
+    sampling:
+      probability: 1.0
 
 # CUSTOM PROPERTIES
 application:

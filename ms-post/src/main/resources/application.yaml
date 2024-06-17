@@ -62,19 +62,22 @@ eureka:
       default-zone: localhost:8761/eureka
 
 management:
-  endpoints:
-    web:
-      exposure:
-        include: info,health,endpoints
-  health:
-    circuit-breakers:
-      enabled: true
   endpoint:
     health:
       show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health,info
   info:
     java.enabled: true
     os.enabled: true
+  otlp:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
+  tracing:
+    sampling:
+      probability: 1.0
 
 resilience4j.circuitbreaker:
   instances:

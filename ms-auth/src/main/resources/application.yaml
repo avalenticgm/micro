@@ -73,9 +73,6 @@ management:
       probability: 1.0
 
 
-
-
-
 # CUSTOM PROPERTIES
 application:
   security:
