@@ -5,6 +5,7 @@ import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.colors.DeviceRgb;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfDocumentInfo;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Image;
@@ -19,6 +20,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.format.DateTimeFormatter;
 
 
 @Service
@@ -27,8 +29,11 @@ public class PdfService {
 
         String title = p.getTitle();
         String image = p.getPostImage();
+        String author = p.getAuthor();
+        double avg = p.getAverage();
+        String keywords = String.join(",", p.getTagNames());
 
-        // Presentazione (1), Preparazione (2), Consigli (3), Conservazione (4),
+        // PRESENTAZIONE (1), PREPARAZIONE (2), CONSIGLI (3), CONSERVAZIONE (4),
         String title1 = null; String title2 = null; String title3 = null; String title4 = null;
         String subTitle1 = null; String subTitle2 = null; String  subTitle3 = null; String  subTitle4 = null;
         String image1 = null; String image2 = null; String image3 = null; String image4 = null;
@@ -67,6 +72,8 @@ public class PdfService {
 
         PdfDocument pdf = new PdfDocument(new PdfWriter(out));
         Document document = new Document(pdf, PageSize.A4);
+
+        addMetaData(pdf, title, author, keywords);
 
         // TITLE
         Paragraph pTitle = new Paragraph(title).setFontSize(20).setBold().setFontColor(new DeviceRgb(220,15,158), 100);
@@ -137,6 +144,18 @@ public class PdfService {
             document.add(pContent4);
         }
 
+        // AUTHOR
+        Paragraph pAuthor = new Paragraph((author != null) ? ("Author: " + author) : "Author: N/A");
+        document.add(pAuthor);
+
+        // AVERAGE
+        Paragraph pAvg = new Paragraph(avg != 0 ? "Rating: "+avg : "Rating: N/A");
+        document.add(pAvg);
+
+        // PUBLICATION DATE
+        Paragraph pDate = new Paragraph("Published on "+p.getPublicationDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        document.add(pDate);
+
 
         // NUMERI DI PAGINA (bottom/right)
         int numberOfPages = pdf.getNumberOfPages();
@@ -153,4 +172,10 @@ public class PdfService {
 
     }
 
+    private void addMetaData(PdfDocument pdf, String title, String author, String keywords) {
+        PdfDocumentInfo info = pdf.getDocumentInfo();
+        info.setTitle(title);
+        info.setAuthor(author);
+        info.setKeywords(keywords);
+    }
 }
